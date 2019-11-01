@@ -1,0 +1,88 @@
+@import "../../colours.pcss";
+
+.controls {
+  display: grid;
+  grid-gap: 0.5em;
+  grid-template-columns: 6em 3em 3em 3em;
+  grid-template-rows: 3em 3em 3em 3em 5em;
+
+  &__button {
+    background: #ffffff;
+    border: 1px solid #aaaaaa;
+    border-radius: 4px;
+    colour: $dark-purple;
+    cursor: pointer;
+
+    &--normal&--mode-normal,
+    &--corner&--mode-corner,
+    &--centre&--mode-centre,
+    &--colour&--mode-colour {
+      color: #ffffff;
+      background: $dark-purple;
+      border-color: $dark-purple;
+    }
+
+    &:hover {
+      background: $light-purple;
+      color: #ffffff;
+    }
+
+    &--delete {
+      grid-column: 2 / 5;
+    }
+
+    &--value {
+      background: $dark-purple;
+      border: $dark-purple;
+      color: #ffffff;
+    }
+
+    &--value::after { display: block; }
+
+    &--value-1::after { content: "1"; }
+    &--value-2::after { content: "2"; }
+    &--value-3::after { content: "3"; }
+    &--value-4::after { content: "4"; }
+    &--value-5::after { content: "5"; }
+    &--value-6::after { content: "6"; }
+    &--value-7::after { content: "7"; }
+    &--value-8::after { content: "8"; }
+    &--value-9::after { content: "9"; }
+
+    &--value-1&--mode-corner::after { transform: translateX(-33%) translateY(-33%); }
+    &--value-2&--mode-corner::after { transform: translateY(-33%); }
+    &--value-3&--mode-corner::after { transform: translateX(33%) translateY(-33%); }
+    &--value-4&--mode-corner::after { transform: translateX(-33%); }
+    &--value-6&--mode-corner::after { transform: translateX(33%); }
+    &--value-7&--mode-corner::after { transform: translateX(-33%) translateY(33%); }
+    &--value-8&--mode-corner::after { transform: translateY(33%); }
+    &--value-9&--mode-corner::after { transform: translateX(33%) translateY(33%); }
+
+    &--value&--mode-corner::after,
+    &--value&--mode-centre::after { font-size: 0.75em; }
+
+    &--value&--mode-colour::after {
+      content: "";
+      height: 1.5em;
+      width: 1.5em;
+      margin: auto;
+    }
+
+    &--value-1&--mode-colour::after { background: #000000; }
+    &--value-2&--mode-colour::after { background: #cfcfcf; }
+    &--value-3&--mode-colour::after { background: #ffffff; }
+    &--value-4&--mode-colour::after { background: #a3e048; }
+    &--value-5&--mode-colour::after { background: #d23be7; }
+    &--value-6&--mode-colour::after { background: #eb7632; }
+    &--value-7&--mode-colour::after { background: #e6261f; }
+    &--value-8&--mode-colour::after { background: #f7d138; }
+    &--value-9&--mode-colour::after { background: #34bce6; }
+  }
+
+  &__bottom {
+    grid-column: 1 / 5;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 0.5em;
+  }
+}

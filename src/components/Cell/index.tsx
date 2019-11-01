@@ -1,11 +1,12 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { State, actions } from "../Sudoku/ducks.ts";
+import { State } from "../../store.ts";
+import { actions } from "../Sudoku/ducks.ts";
 import { Value } from "../../sudoku.ts";
 import * as styles from "./style.pcss";
 
-const isMac = /^Mac/.test(navigator.platform);
+const isMac = navigator.platform.startsWith("Mac");
 
 interface OwnProps {
   x: number;
@@ -67,13 +68,13 @@ const Cell = (props: Props): JSX.Element => {
 
 const mapStateToProps = (state: State, ownProps: OwnProps): StateProps => {
   const { x, y } = ownProps;
-  const { dragging, focused, sudoku } = state;
+  const { dragging, focused, puzzle } = state.sudoku;
 
   return {
     dragging,
     focused: focused[y][x],
-    locked: sudoku.locked[y][x],
-    value: sudoku.values[y][x],
+    locked: puzzle.locked[y][x],
+    value: puzzle.values[y][x],
   };
 };
 

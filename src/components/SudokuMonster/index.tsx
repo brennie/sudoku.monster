@@ -1,8 +1,10 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
+import { State } from "../../store.ts";
+import Controls from "../Controls";
 import Sudoku from "../Sudoku";
-import { State, actions } from "../Sudoku/ducks.ts";
+import { actions } from "../Sudoku/ducks.ts";
 import * as styles from "./style.pcss";
 
 interface StateProps {
@@ -31,7 +33,10 @@ const SudokuMonster = (props: Props): JSX.Element => {
       <div className={styles["sudoku-monster__banner"]}>
         <h1>sudoku.monster</h1>
       </div>
-      <Sudoku />
+      <div className={styles["sudoku-monster__game"]}>
+        <Sudoku />
+        <Controls />
+      </div>
     </div>
   );
 };
@@ -43,7 +48,7 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = (state: State): StateProps => ({
-  dragging: state.dragging,
+  dragging: state.sudoku.dragging,
 });
 
 export default connect(

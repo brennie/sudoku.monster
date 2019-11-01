@@ -69,14 +69,14 @@ export const actions = {
   setDragging,
 };
 
-type Action =
+export type Action =
   | ClearFocusAction
   | FocusCellAction
   | SetCellsAction
   | SetDraggingAction;
 
 export interface State {
-  sudoku: Sudoku;
+  puzzle: Sudoku;
   focused: boolean[][];
   dragging: boolean;
 }
@@ -84,7 +84,7 @@ export interface State {
 const newFocus = (): boolean[][] => times(() => repeat(false, 9), 9);
 
 const defaultState = {
-  sudoku: newSudoku(),
+  puzzle: newSudoku(),
   focused: newFocus(),
   dragging: false,
 };
@@ -115,12 +115,12 @@ export default (state: State = defaultState, action: Action): State => {
 
     case SET_CELLS: {
       const { value } = action.payload;
-      const { focused, sudoku } = state;
+      const { focused, puzzle } = state;
 
       const cells = focused.reduce(
         (cells, row, y) =>
           row.reduce((cells, isFocused, x) => {
-            if (isFocused && !sudoku.locked[y][x]) {
+            if (isFocused && !puzzle.locked[y][x]) {
               cells.push({ x, y });
             }
 
@@ -132,9 +132,9 @@ export default (state: State = defaultState, action: Action): State => {
       let values;
       if (cells.length === 1) {
         const { x, y } = cells[0];
-        values = update2D(sudoku.values, x, y, value);
+        values = update2D(puzzle.values, x, y, value);
       } else {
-        values = clone2D(sudoku.values);
+        values = clone2D(puzzle.values);
         for (const { x, y } of cells) {
           values[y][x] = value;
         }
@@ -142,8 +142,8 @@ export default (state: State = defaultState, action: Action): State => {
 
       return {
         ...state,
-        sudoku: {
-          ...sudoku,
+        puzzle: {
+          ...puzzle,
           values,
         },
       };

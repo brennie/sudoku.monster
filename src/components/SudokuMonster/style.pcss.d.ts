@@ -3,6 +3,7 @@
 interface CssExports {
   'sudoku-monster': string;
   'sudoku-monster__banner': string;
+  'sudoku-monster__game': string;
 }
 declare const cssExports: CssExports;
 export = cssExports;
