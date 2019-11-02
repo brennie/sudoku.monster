@@ -16,7 +16,7 @@ const clearFocus = (): ClearFocusAction => ({
   type: CLEAR_FOCUS,
 });
 
-export interface FocusCellAction {
+interface FocusCellAction {
   type: "sudoku.monster/sudoku/FOCUS_CELL";
   payload: {
     x: number;
@@ -34,7 +34,7 @@ const focusCell = (x: number, y: number, union: boolean): FocusCellAction => ({
   },
 });
 
-export interface SetCellsAction {
+interface SetCellsAction {
   type: "sudoku.monster/sudoku/SET_CELLS";
   payload: {
     value: Value;
