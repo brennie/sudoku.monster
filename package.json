@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/brennie/sudoku.monster#readme",
   "scripts": {
-    "eslint": "eslint",
+    "eslint": "eslint 'src/**/*.{ts,tsx}'",
     "webpack": "webpack",
     "webpack-dev-server": "webpack-dev-server"
   },
