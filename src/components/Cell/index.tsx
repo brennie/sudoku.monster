@@ -1,7 +1,8 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { State, actions } from "sudoku.monster/ducks/sudoku";
+import { State } from "sudoku.monster/ducks";
+import { actions } from "sudoku.monster/ducks/sudoku";
 import { Value } from "sudoku.monster/sudoku";
 import * as styles from "./style.pcss";
 
@@ -67,13 +68,13 @@ const Cell = (props: Props): JSX.Element => {
 
 const mapStateToProps = (state: State, ownProps: OwnProps): StateProps => {
   const { x, y } = ownProps;
-  const { dragging, focused, sudoku } = state;
+  const { dragging, focused, puzzle } = state.sudoku;
 
   return {
     dragging,
     focused: focused[y][x],
-    locked: sudoku.locked[y][x],
-    value: sudoku.values[y][x],
+    locked: puzzle.locked[y][x],
+    value: puzzle.values[y][x],
   };
 };
 

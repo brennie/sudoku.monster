@@ -2,7 +2,8 @@ import * as React from "react";
 import { connect } from "react-redux";
 
 import Sudoku from "sudoku.monster/components/Sudoku";
-import { State, actions } from "sudoku.monster/ducks/sudoku";
+import { State } from "sudoku.monster/ducks";
+import { actions } from "sudoku.monster/ducks/sudoku";
 import * as styles from "./style.pcss";
 
 interface StateProps {
@@ -43,7 +44,7 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = (state: State): StateProps => ({
-  dragging: state.dragging,
+  dragging: state.sudoku.dragging,
 });
 
 export default connect(
