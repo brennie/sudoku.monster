@@ -1,8 +1,8 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
+import { State, actions } from "sudoku.monster/ducks/sudoku";
 import { Value } from "sudoku.monster/sudoku";
-import { State, actions } from "sudoku.monster/components/Sudoku/ducks";
 import * as styles from "./style.pcss";
 
 const isMac = navigator.platform.startsWith("Mac");
