@@ -2,7 +2,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 
 import Sudoku from "sudoku.monster/components/Sudoku";
-import { State, actions } from "sudoku.monster/components/Sudoku/ducks.ts";
+import { State, actions } from "sudoku.monster/components/Sudoku/ducks";
 import * as styles from "./style.pcss";
 
 interface StateProps {
