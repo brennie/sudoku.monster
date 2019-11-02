@@ -1,7 +1,7 @@
 import { repeat, times } from "ramda";
 
-import { Sudoku, Value, newSudoku } from "../../sudoku.ts";
-import { clone2D, update2D } from "../../utils.ts";
+import { Sudoku, Value, newSudoku } from "sudoku.monster/sudoku.ts";
+import { clone2D, update2D } from "sudoku.monster/utils.ts";
 
 const CLEAR_FOCUS = "sudoku.monster/sudoku/CLEAR_FOCUS";
 const FOCUS_CELL = "sudoku.monster/sudoku/FOCUS_CELL";

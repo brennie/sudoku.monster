@@ -26,6 +26,9 @@ module.exports = {
   resolve: {
     extensions: [".pcss", ".js", ".ts", ".tsx"],
     modules: ["node_modules"],
+    alias: {
+      "sudoku.monster": srcPath,
+    },
   },
   module: {
     rules: [

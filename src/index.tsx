@@ -4,8 +4,8 @@ import { Provider } from "react-redux";
 import { createStore } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 
-import SudokuMonster from "./components/SudokuMonster";
-import reducer from "./components/Sudoku/ducks";
+import reducer from "sudoku.monster/components/Sudoku/ducks";
+import SudokuMonster from "sudoku.monster/components/SudokuMonster";
 import "./index.pcss";
 
 window.addEventListener("load", () => {

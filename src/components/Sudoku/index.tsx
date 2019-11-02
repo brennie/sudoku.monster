@@ -1,9 +1,9 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { Value, parseValue } from "../../sudoku.ts";
-import Cell from "../Cell";
-import { actions } from "./ducks.ts";
+import { Value, parseValue } from "sudoku.monster/sudoku.ts";
+import Cell from "sudoku.monster/components/Cell";
+import { actions } from "sudoku.monster/components/Sudoku/ducks.ts";
 import * as styles from "./style.pcss";
 
 interface Props {
