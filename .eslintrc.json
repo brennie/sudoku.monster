@@ -1,5 +1,8 @@
 {
-  "plugins": ["prettier"],
+  "plugins": [
+    "prettier",
+    "import"
+  ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 6,
@@ -20,6 +23,8 @@
   ],
   "extends": [
     "eslint:recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
     "plugin:prettier/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
@@ -27,7 +32,18 @@
     "prettier/react",
     "plugin:react/recommended"
   ],
+  "rules": {
+    "import/order": [2, { "groups": ["external", "internal"] } ]
+  },
   "settings": {
+    "import/resolver": {
+      "alias": {
+        "map": [
+          ["sudoku.monster", "./src"]
+        ],
+        "extensions": [".ts", ".tsx", ".js", ".jsx"]
+      }
+    },
     "react": {
       "version": "detect"
     }
