@@ -42,9 +42,8 @@ const SudokuMonster = (props: Props): JSX.Element => {
 };
 
 const mapDispatchToProps = {
-  clearFocus: (): ReturnType<typeof actions.clearFocus> => actions.clearFocus(),
-  stopDragging: (): ReturnType<typeof actions.setDragging> =>
-    actions.setDragging(false),
+  clearFocus: actions.clearFocus,
+  stopDragging: actions.setDragging.bind(undefined, false),
 };
 
 const mapStateToProps = (state: State): StateProps => ({

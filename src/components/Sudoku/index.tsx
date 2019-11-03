@@ -65,8 +65,7 @@ class Sudoku extends React.Component<Props, {}> {
 }
 
 const mapDispatchToProps = {
-  setCells: (value: Value): ReturnType<typeof actions.setCells> =>
-    actions.setCells(value),
+  setCells: actions.setCells,
 };
 
 export default connect(

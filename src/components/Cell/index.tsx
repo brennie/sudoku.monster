@@ -79,13 +79,8 @@ const mapStateToProps = (state: State, ownProps: OwnProps): StateProps => {
 };
 
 const mapDispatchToProps = {
-  startDragging: (): ReturnType<typeof actions.setDragging> =>
-    actions.setDragging(true),
-  focusCell: (
-    x: number,
-    y: number,
-    union: boolean,
-  ): ReturnType<typeof actions.focusCell> => actions.focusCell(x, y, union),
+  startDragging: actions.setDragging.bind(undefined, true),
+  focusCell: actions.focusCell,
 };
 
 export default connect(

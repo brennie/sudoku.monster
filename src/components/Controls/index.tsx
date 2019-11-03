@@ -135,13 +135,10 @@ const mapStateToProps = (state: State): StateProps => ({
 });
 
 const mapDispatchToProps = {
-  newPuzzle: (): ReturnType<typeof sudokuActions.newPuzzle> =>
-    sudokuActions.newPuzzle(),
-  reset: (): ReturnType<typeof sudokuActions.reset> => sudokuActions.reset(),
-  setMode: (mode: Mode): ReturnType<typeof uiActions.setMode> =>
-    uiActions.setMode(mode),
-  setCells: (value: Value): ReturnType<typeof sudokuActions.setCells> =>
-    sudokuActions.setCells(value),
+  newPuzzle: sudokuActions.newPuzzle,
+  reset: sudokuActions.reset,
+  setMode: uiActions.setMode,
+  setCells: sudokuActions.setCells,
 };
 
 export default connect(
