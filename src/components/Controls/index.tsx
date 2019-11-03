@@ -9,6 +9,7 @@ import { Mode, actions as uiActions } from "sudoku.monster/ducks/ui";
 import * as styles from "./style.pcss";
 
 interface StateProps {
+  dragging: boolean;
   mode: Mode;
 }
 
@@ -24,6 +25,7 @@ type Props = StateProps & {
 type ValueAction = (value: Value) => void;
 
 const Controls = ({
+  dragging,
   mode,
   newPuzzle,
   redo,
@@ -55,7 +57,11 @@ const Controls = ({
   return (
     <div
       className={styles["controls"]}
-      onMouseUp={(e): void => e.stopPropagation()}
+      onMouseUp={(e): void => {
+        if (!dragging) {
+          e.stopPropagation();
+        }
+      }}
     >
       <button
         className={`${buttonStyle} ${modeStyle} ${styles["controls__button--normal"]}`}
@@ -140,6 +146,7 @@ const Controls = ({
 };
 
 const mapStateToProps = (state: State): StateProps => ({
+  dragging: state.sudoku.present.dragging,
   mode: state.ui.mode,
 });
 
