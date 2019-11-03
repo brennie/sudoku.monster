@@ -10,6 +10,58 @@
   min-width: 2rem;
   user-select: none;
 
+  &__mark {
+    font-size: 0.5em;
+    position: absolute;
+
+    &--corner {
+
+      &:nth-of-type(1) {
+        top: 0.25em;
+        left: 0.25em;
+      }
+      &:nth-of-type(2) {
+        top: 0.25em;
+        right: 0.25em;
+      }
+      &:nth-of-type(3) {
+        bottom: 0.25em;
+        left: 0.25em;
+      }
+      &:nth-of-type(4) {
+        bottom: 0.25em;
+        right: 0.25em;
+      }
+      &:nth-of-type(5) {
+        top: 0.25em;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      &:nth-of-type(6) {
+        bottom: 0.25em;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      &:nth-of-type(7) {
+        top: 50%;
+        left: 0.25em;
+        transform: translateY(-50%);
+
+      }
+      &:nth-of-type(8) {
+        top: 50%;
+        right: 0.25em;
+        transform: translateY(-50%);
+      }
+    }
+
+    &--centre {
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+    }
+  }
+
   &__input {
     color: $light-purple;
     width: 100%;
@@ -17,6 +69,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  &__input--marked {
+    position: relative;
+    display: block;
   }
 
   &--focused {

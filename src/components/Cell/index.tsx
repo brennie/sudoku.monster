@@ -18,6 +18,8 @@ interface StateProps {
   focused: boolean;
   locked: boolean;
   value: Value | null;
+  centreMarks: Value[];
+  cornerMarks: Value[];
 }
 
 type Props = OwnProps &
@@ -26,21 +28,47 @@ type Props = OwnProps &
     startDragging: () => void;
   };
 
-const Cell = (props: Props): JSX.Element => {
-  const {
-    dragging,
-    focusCell,
-    focused,
-    locked,
-    startDragging,
-    value,
-    x,
-    y,
-  } = props;
+const centreMarkStyle = `${styles["cell__mark"]} ${styles["cell__mark--centre"]}`;
+const cornerMarkStyle = `${styles["cell__mark"]} ${styles["cell__mark--corner"]}`;
 
+const Cell = ({
+  centreMarks,
+  cornerMarks,
+  dragging,
+  focusCell,
+  focused,
+  locked,
+  startDragging,
+  value,
+  x,
+  y,
+}: Props): JSX.Element => {
   const classes = [styles["cell"]];
+  const inputClasses = [styles["cell__input"]];
   if (focused) {
     classes.push(styles["cell--focused"]);
+  }
+
+  let inner;
+  if (locked) {
+    inner = <div>{value}</div>;
+  } else if ((value === null && centreMarks.length) || cornerMarks.length) {
+    inner = (
+      <div
+        className={`${styles["cell__input"]} ${styles["cell__input--marked"]}`}
+      >
+        <>
+          {cornerMarks.map((v, i) => (
+            <div className={cornerMarkStyle} key={i}>
+              {v}
+            </div>
+          ))}
+        </>
+        <div className={centreMarkStyle}>{centreMarks}</div>
+      </div>
+    );
+  } else {
+    inner = <div className={styles["cell__input"]}>{value}</div>;
   }
 
   return (
@@ -61,7 +89,7 @@ const Cell = (props: Props): JSX.Element => {
         }
       }}
     >
-      <span className={locked ? "" : styles["cell__input"]}>{value}</span>
+      <div className={locked ? undefined : inputClasses.join(" ")}>{inner}</div>
     </div>
   );
 };
@@ -75,6 +103,8 @@ const mapStateToProps = (state: State, ownProps: OwnProps): StateProps => {
     focused: focused[y][x],
     locked: puzzle.locked[y][x],
     value: puzzle.values[y][x],
+    centreMarks: puzzle.centreMarks[y][x],
+    cornerMarks: puzzle.cornerMarks[y][x],
   };
 };
 

@@ -4,6 +4,10 @@ interface CssExports {
   'cell': string;
   'cell--focused': string;
   'cell__input': string;
+  'cell__input--marked': string;
+  'cell__mark': string;
+  'cell__mark--centre': string;
+  'cell__mark--corner': string;
 }
 declare const cssExports: CssExports;
 export = cssExports;
