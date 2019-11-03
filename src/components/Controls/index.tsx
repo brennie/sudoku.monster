@@ -12,13 +12,14 @@ interface StateProps {
 }
 
 type Props = StateProps & {
+  reset: () => void;
   setMode: (mode: Mode) => void;
   setCells: (value: Value) => void;
 };
 
 type ValueAction = (value: Value) => void;
 
-const Controls = ({ mode, setCells, setMode }: Props): JSX.Element => {
+const Controls = ({ mode, reset, setCells, setMode }: Props): JSX.Element => {
   const buttonStyle = styles["controls__button"];
   const valueStyle = styles["controls__button--value"];
 
@@ -107,7 +108,9 @@ const Controls = ({ mode, setCells, setMode }: Props): JSX.Element => {
       <div className={styles["controls__bottom"]}>
         <button className={buttonStyle}>Undo</button>
         <button className={buttonStyle}>Redo</button>
-        <button className={buttonStyle}>Restart</button>
+        <button className={buttonStyle} onClick={(): void => reset()}>
+          Restart
+        </button>
         <button className={buttonStyle}>Check</button>
       </div>
     </div>
@@ -119,6 +122,7 @@ const mapStateToProps = (state: State): StateProps => ({
 });
 
 const mapDispatchToProps = {
+  reset: (): ReturnType<typeof sudokuActions.reset> => sudokuActions.reset(),
   setMode: (mode: Mode): ReturnType<typeof uiActions.setMode> =>
     uiActions.setMode(mode),
   setCells: (value: Value): ReturnType<typeof sudokuActions.setCells> =>
