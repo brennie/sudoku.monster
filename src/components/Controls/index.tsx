@@ -1,5 +1,6 @@
 import * as React from "react";
 import { connect } from "react-redux";
+import { ActionCreators as undoActions } from "redux-undo";
 
 import { Value } from "sudoku.monster/sudoku";
 import { State } from "sudoku.monster/ducks";
@@ -13,9 +14,11 @@ interface StateProps {
 
 type Props = StateProps & {
   newPuzzle: () => void;
+  redo: () => void;
   reset: () => void;
   setMode: (mode: Mode) => void;
   setCells: (value: Value) => void;
+  undo: () => void;
 };
 
 type ValueAction = (value: Value) => void;
@@ -23,9 +26,11 @@ type ValueAction = (value: Value) => void;
 const Controls = ({
   mode,
   newPuzzle,
+  redo,
   reset,
   setCells,
   setMode,
+  undo,
 }: Props): JSX.Element => {
   const buttonStyle = styles["controls__button"];
   const valueStyle = styles["controls__button--value"];
@@ -113,8 +118,12 @@ const Controls = ({
         Delete
       </button>
       <div className={styles["controls__bottom"]}>
-        <button className={buttonStyle}>Undo</button>
-        <button className={buttonStyle}>Redo</button>
+        <button className={buttonStyle} onClick={(): void => undo()}>
+          Undo
+        </button>
+        <button className={buttonStyle} onClick={(): void => redo()}>
+          Redo
+        </button>
         <button className={buttonStyle} onClick={(): void => reset()}>
           Restart
         </button>
@@ -136,9 +145,11 @@ const mapStateToProps = (state: State): StateProps => ({
 
 const mapDispatchToProps = {
   newPuzzle: sudokuActions.newPuzzle,
+  redo: undoActions.redo,
   reset: sudokuActions.reset,
   setMode: uiActions.setMode,
   setCells: sudokuActions.setCells,
+  undo: undoActions.undo,
 };
 
 export default connect(

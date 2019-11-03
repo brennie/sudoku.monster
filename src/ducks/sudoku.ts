@@ -1,4 +1,5 @@
 import { repeat, times } from "ramda";
+import undoable, { includeAction, StateWithHistory } from "redux-undo";
 
 import { Sudoku, Value, newSudoku } from "sudoku.monster/sudoku";
 import { clone2D, update2D } from "sudoku.monster/utils";
@@ -97,11 +98,13 @@ export type Action =
   | SetCellsAction
   | SetDraggingAction;
 
-export interface State {
+interface InnerState {
   puzzle: Sudoku;
   focused: boolean[][];
   dragging: boolean;
 }
+
+export type State = StateWithHistory<InnerState>;
 
 const newFocus = (): boolean[][] => times(() => repeat(false, 9), 9);
 
@@ -111,7 +114,10 @@ const defaultState = {
   dragging: false,
 };
 
-export default (state: State = defaultState, action: Action): State => {
+const reducer = (
+  state: InnerState = defaultState,
+  action: Action,
+): InnerState => {
   switch (action.type) {
     case CLEAR_FOCUS:
       return {
@@ -208,3 +214,7 @@ export default (state: State = defaultState, action: Action): State => {
       return state;
   }
 };
+
+export default undoable(reducer, {
+  filter: includeAction(SET_CELLS),
+});

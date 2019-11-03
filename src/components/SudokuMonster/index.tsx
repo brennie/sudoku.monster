@@ -47,7 +47,7 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = (state: State): StateProps => ({
-  dragging: state.sudoku.dragging,
+  dragging: state.sudoku.present.dragging,
 });
 
 export default connect(

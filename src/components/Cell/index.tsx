@@ -68,7 +68,7 @@ const Cell = (props: Props): JSX.Element => {
 
 const mapStateToProps = (state: State, ownProps: OwnProps): StateProps => {
   const { x, y } = ownProps;
-  const { dragging, focused, puzzle } = state.sudoku;
+  const { dragging, focused, puzzle } = state.sudoku.present;
 
   return {
     dragging,
