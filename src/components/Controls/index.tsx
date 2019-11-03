@@ -4,7 +4,10 @@ import { ActionCreators as undoActions } from "redux-undo";
 
 import { Value } from "sudoku.monster/sudoku";
 import { State } from "sudoku.monster/ducks";
-import { actions as sudokuActions } from "sudoku.monster/ducks/sudoku";
+import {
+  actions as sudokuActions,
+  PencilMarkKind,
+} from "sudoku.monster/ducks/sudoku";
 import { Mode, actions as uiActions } from "sudoku.monster/ducks/ui";
 import * as styles from "./style.pcss";
 
@@ -18,11 +21,10 @@ type Props = StateProps & {
   redo: () => void;
   reset: () => void;
   setMode: (mode: Mode) => void;
-  setCells: (value: Value) => void;
+  setCells: (value: Value | null) => void;
+  togglePencilMarks: (kind: PencilMarkKind, value: Value | null) => void;
   undo: () => void;
 };
-
-type ValueAction = (value: Value) => void;
 
 const Controls = ({
   dragging,
@@ -32,13 +34,14 @@ const Controls = ({
   reset,
   setCells,
   setMode,
+  togglePencilMarks,
   undo,
 }: Props): JSX.Element => {
   const buttonStyle = styles["controls__button"];
   const valueStyle = styles["controls__button--value"];
 
   let modeStyle;
-  let valueAction: ValueAction = (): void => void 0;
+  let valueAction: (value: Value | null) => void;
   switch (mode) {
     case Mode.Normal:
       modeStyle = styles["controls__button--mode-normal"];
@@ -47,10 +50,12 @@ const Controls = ({
 
     case Mode.Corner:
       modeStyle = styles["controls__button--mode-corner"];
+      valueAction = togglePencilMarks.bind(undefined, PencilMarkKind.Corner);
       break;
 
     case Mode.Centre:
       modeStyle = styles["controls__button--mode-centre"];
+      valueAction = togglePencilMarks.bind(undefined, PencilMarkKind.Centre);
       break;
   }
 
@@ -156,6 +161,7 @@ const mapDispatchToProps = {
   reset: sudokuActions.reset,
   setMode: uiActions.setMode,
   setCells: sudokuActions.setCells,
+  togglePencilMarks: sudokuActions.togglePencilMarks,
   undo: undoActions.undo,
 };
 

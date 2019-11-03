@@ -4,7 +4,6 @@ export enum Mode {
   Normal = "normal",
   Corner = "corner",
   Centre = "centre",
-  Colour = "colour",
 }
 
 interface SetModeAction {

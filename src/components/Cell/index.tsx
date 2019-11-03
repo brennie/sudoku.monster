@@ -17,7 +17,7 @@ interface StateProps {
   dragging: boolean;
   focused: boolean;
   locked: boolean;
-  value: Value;
+  value: Value | null;
 }
 
 type Props = OwnProps &

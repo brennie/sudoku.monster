@@ -10,6 +10,7 @@ const NEW_PUZZLE = "sudoku.monster/sudoku/NEW_PUZZLE";
 const RESET = "sudoku.monster/sudoku/RESET";
 const SET_CELLS = "sudoku.monster/sudoku/SET_CELLS";
 const SET_DRAGGING = "sudoku.monster/sudoku/SET_DRAGGING";
+const TOGGLE_PENCIL_MARKS = "sudoku.monster/sudoku/TOGGLE_PENCIL_MARKS";
 
 export interface ClearFocusAction {
   type: "sudoku.monster/sudoku/CLEAR_FOCUS";
@@ -56,11 +57,11 @@ const reset = (): ResetAction => ({
 interface SetCellsAction {
   type: "sudoku.monster/sudoku/SET_CELLS";
   payload: {
-    value: Value;
+    value: Value | null;
   };
 }
 
-const setCells = (value: Value): SetCellsAction => ({
+const setCells = (value: Value | null): SetCellsAction => ({
   type: SET_CELLS,
   payload: {
     value,
@@ -81,6 +82,30 @@ const setDragging = (dragging: boolean): SetDraggingAction => ({
   },
 });
 
+export enum PencilMarkKind {
+  Centre = "center",
+  Corner = "corner",
+}
+
+interface TogglePencilMarksAction {
+  type: "sudoku.monster/sudoku/TOGGLE_PENCIL_MARKS";
+  payload: {
+    kind: PencilMarkKind;
+    value: Value | null;
+  };
+}
+
+const togglePencilMarks = (
+  kind: PencilMarkKind,
+  value: Value | null,
+): TogglePencilMarksAction => ({
+  type: TOGGLE_PENCIL_MARKS,
+  payload: {
+    kind,
+    value,
+  },
+});
+
 export const actions = {
   clearFocus,
   focusCell,
@@ -88,6 +113,7 @@ export const actions = {
   reset,
   setCells,
   setDragging,
+  togglePencilMarks,
 };
 
 export type Action =
@@ -96,7 +122,8 @@ export type Action =
   | NewPuzzleAction
   | ResetAction
   | SetCellsAction
-  | SetDraggingAction;
+  | SetDraggingAction
+  | TogglePencilMarksAction;
 
 interface InnerState {
   puzzle: Sudoku;
@@ -112,6 +139,45 @@ const defaultState = {
   puzzle: newSudoku(),
   focused: newFocus(),
   dragging: false,
+};
+
+interface Cell {
+  x: number;
+  y: number;
+}
+
+const getFocusedCells = ({ focused, puzzle }: InnerState): Cell[] =>
+  focused.reduce(
+    (cells, row, y) =>
+      row.reduce((cells, isFocused, x) => {
+        if (isFocused && !puzzle.locked[y][x]) {
+          cells.push({ x, y });
+        }
+
+        return cells;
+      }, cells),
+    [] as { x: number; y: number }[],
+  );
+
+const toggleValue = (values: Value[], value: Value | null): Value[] => {
+  if (value === null) {
+    return [];
+  }
+
+  const newValues = values.slice();
+  let i = values.indexOf(value);
+  if (i !== -1) {
+    newValues.splice(i, 1);
+  } else {
+    for (i = 0; i < values.length; i++) {
+      if (values[i] > value) {
+        break;
+      }
+    }
+    newValues.splice(i, 0, value);
+  }
+
+  return newValues;
 };
 
 const reducer = (
@@ -170,19 +236,9 @@ const reducer = (
 
     case SET_CELLS: {
       const { value } = action.payload;
-      const { focused, puzzle } = state;
+      const { puzzle } = state;
 
-      const cells = focused.reduce(
-        (cells, row, y) =>
-          row.reduce((cells, isFocused, x) => {
-            if (isFocused && !puzzle.locked[y][x]) {
-              cells.push({ x, y });
-            }
-
-            return cells;
-          }, cells),
-        [] as { x: number; y: number }[],
-      );
+      const cells = getFocusedCells(state);
 
       let values;
       if (cells.length === 1) {
@@ -210,11 +266,37 @@ const reducer = (
         dragging: action.payload.dragging,
       };
 
+    case TOGGLE_PENCIL_MARKS: {
+      const { puzzle } = state;
+      const { kind, value } = action.payload;
+      const cells = getFocusedCells(state);
+
+      const newPuzzle = {
+        ...puzzle,
+      };
+
+      let toUpdate;
+      if (kind === PencilMarkKind.Centre) {
+        toUpdate = newPuzzle.centreMarks = clone2D(newPuzzle.centreMarks);
+      } else {
+        toUpdate = newPuzzle.cornerMarks = clone2D(newPuzzle.cornerMarks);
+      }
+
+      for (const { x, y } of cells) {
+        toUpdate[y][x] = toggleValue(toUpdate[y][x], value);
+      }
+
+      return {
+        ...state,
+        puzzle: newPuzzle,
+      };
+    }
+
     default:
       return state;
   }
 };
 
 export default undoable(reducer, {
-  filter: includeAction(SET_CELLS),
+  filter: includeAction([SET_CELLS, TOGGLE_PENCIL_MARKS]),
 });

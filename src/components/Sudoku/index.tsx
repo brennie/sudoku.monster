@@ -2,13 +2,20 @@ import * as React from "react";
 import { connect } from "react-redux";
 
 import Cell from "sudoku.monster/components/Cell";
-import { actions } from "sudoku.monster/ducks/sudoku";
+import { State } from "sudoku.monster/ducks";
+import { actions, PencilMarkKind } from "sudoku.monster/ducks/sudoku";
+import { Mode } from "sudoku.monster/ducks/ui";
 import { Value, parseValue } from "sudoku.monster/sudoku";
 import * as styles from "./style.pcss";
 
-interface Props {
-  setCells: (value: Value) => void;
+interface StateProps {
+  mode: Mode;
 }
+
+type Props = StateProps & {
+  setCells: (value: Value | null) => void;
+  togglePencilMarks: (kind: PencilMarkKind, value: Value | null) => void;
+};
 
 class Sudoku extends React.Component<Props, {}> {
   onKeyDown: (e: KeyboardEvent) => void;
@@ -17,15 +24,39 @@ class Sudoku extends React.Component<Props, {}> {
     super(props);
 
     this.onKeyDown = (e: KeyboardEvent): void => {
-      const { setCells } = this.props;
+      const { mode, setCells, togglePencilMarks } = this.props;
+
+      let valueAction: (value: Value | null) => void;
+      switch (mode) {
+        case Mode.Normal:
+          valueAction = setCells;
+          break;
+
+        case Mode.Corner:
+          valueAction = togglePencilMarks.bind(
+            undefined,
+            PencilMarkKind.Corner,
+          );
+          break;
+
+        case Mode.Centre:
+          valueAction = togglePencilMarks.bind(
+            undefined,
+            PencilMarkKind.Centre,
+          );
+          break;
+
+        default:
+          return;
+      }
 
       if (e.key === "Backspace" || e.key === "Delete") {
         e.preventDefault();
-        setCells(null);
+        valueAction(null);
       } else if (e.key.length === 1) {
         const value = parseValue(e.key);
         if (value !== null) {
-          setCells(value);
+          valueAction(value);
         }
       }
     };
@@ -64,11 +95,16 @@ class Sudoku extends React.Component<Props, {}> {
   }
 }
 
+const mapStateToProps = (state: State): StateProps => ({
+  mode: state.ui.mode,
+});
+
 const mapDispatchToProps = {
   setCells: actions.setCells,
+  togglePencilMarks: actions.togglePencilMarks,
 };
 
 export default connect(
-  undefined,
+  mapStateToProps,
   mapDispatchToProps,
 )(Sudoku);
