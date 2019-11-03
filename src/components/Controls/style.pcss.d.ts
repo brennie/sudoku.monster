@@ -10,6 +10,7 @@ interface CssExports {
   'controls__button--mode-centre': string;
   'controls__button--mode-corner': string;
   'controls__button--mode-normal': string;
+  'controls__button--new': string;
   'controls__button--normal': string;
   'controls__button--value': string;
   'controls__button--value-1': string;

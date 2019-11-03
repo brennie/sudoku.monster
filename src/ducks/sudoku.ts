@@ -5,6 +5,7 @@ import { clone2D, update2D } from "sudoku.monster/utils";
 
 const CLEAR_FOCUS = "sudoku.monster/sudoku/CLEAR_FOCUS";
 const FOCUS_CELL = "sudoku.monster/sudoku/FOCUS_CELL";
+const NEW_PUZZLE = "sudoku.monster/sudoku/NEW_PUZZLE";
 const RESET = "sudoku.monster/sudoku/RESET";
 const SET_CELLS = "sudoku.monster/sudoku/SET_CELLS";
 const SET_DRAGGING = "sudoku.monster/sudoku/SET_DRAGGING";
@@ -33,6 +34,14 @@ const focusCell = (x: number, y: number, union: boolean): FocusCellAction => ({
     y,
     union,
   },
+});
+
+interface NewPuzzleAction {
+  type: "sudoku.monster/sudoku/NEW_PUZZLE";
+}
+
+const newPuzzle = (): NewPuzzleAction => ({
+  type: NEW_PUZZLE,
 });
 
 interface ResetAction {
@@ -74,6 +83,7 @@ const setDragging = (dragging: boolean): SetDraggingAction => ({
 export const actions = {
   clearFocus,
   focusCell,
+  newPuzzle,
   reset,
   setCells,
   setDragging,
@@ -82,6 +92,7 @@ export const actions = {
 export type Action =
   | ClearFocusAction
   | FocusCellAction
+  | NewPuzzleAction
   | ResetAction
   | SetCellsAction
   | SetDraggingAction;
@@ -123,6 +134,12 @@ export default (state: State = defaultState, action: Action): State => {
         focused: update2D(focused, x, y, true),
       };
     }
+
+    case NEW_PUZZLE:
+      return {
+        ...state,
+        puzzle: newSudoku(),
+      };
 
     case RESET: {
       const { puzzle } = state;
