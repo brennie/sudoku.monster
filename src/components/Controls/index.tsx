@@ -17,6 +17,7 @@ interface StateProps {
 }
 
 type Props = StateProps & {
+  clearHistory: () => void;
   newPuzzle: () => void;
   redo: () => void;
   reset: () => void;
@@ -27,6 +28,7 @@ type Props = StateProps & {
 };
 
 const Controls = ({
+  clearHistory,
   dragging,
   mode,
   newPuzzle,
@@ -135,13 +137,22 @@ const Controls = ({
         <button className={buttonStyle} onClick={(): void => redo()}>
           Redo
         </button>
-        <button className={buttonStyle} onClick={(): void => reset()}>
+        <button
+          className={buttonStyle}
+          onClick={(): void => {
+            clearHistory();
+            reset();
+          }}
+        >
           Restart
         </button>
         <button className={buttonStyle}>Check</button>
         <button
           className={`${buttonStyle} ${styles["controls__button--new"]}`}
-          onClick={(): void => newPuzzle()}
+          onClick={(): void => {
+            clearHistory();
+            newPuzzle();
+          }}
         >
           New Puzzle
         </button>
@@ -156,6 +167,7 @@ const mapStateToProps = (state: State): StateProps => ({
 });
 
 const mapDispatchToProps = {
+  clearHistory: undoActions.clearHistory,
   newPuzzle: sudokuActions.newPuzzle,
   redo: undoActions.redo,
   reset: sudokuActions.reset,

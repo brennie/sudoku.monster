@@ -210,6 +210,8 @@ const reducer = (
     case NEW_PUZZLE:
       return {
         ...state,
+        dragging: false,
+        focused: newFocus(),
         puzzle: newSudoku(),
       };
 
@@ -227,6 +229,8 @@ const reducer = (
 
       return {
         ...state,
+        dragging: false,
+        focused: newFocus(),
         puzzle: {
           ...puzzle,
           values,
